@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const EquipmentSchema = new Schema({
   name: { type: String, required: true, maxLength: 20 },
   discription: { type: String, required: true, maxLength: 100 },
-  category: { type: Schema.Types.ObjectId, ref: "Category" },
+  category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
   price: { type: Number },
   stock: { type: Number},
 });
@@ -16,4 +16,4 @@ EquipmentSchema.virtual("url").get(function () {
 })
 
 // Export model
-module.exports = mongoose.mode("Equipment", EquipmentSchema);
+module.exports = mongoose.model("Equipment", EquipmentSchema);

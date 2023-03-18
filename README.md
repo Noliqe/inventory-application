@@ -52,3 +52,17 @@ Create a new Mongo Collection using the web-interface and then set up mine datab
 - Added equipment model and category model
 - Add schema's to each model
 - Virtuals for each model, which returns the absolute URL required to get a particular instance of the model
+
+4. Fourth step
+
+Download populatedb.js and edit it to the specifics of my models.
+
+- Added functions equipment- and category create, which creates equipments and categories
+- Added function categoryUpdate, to update an current category
+- Created an function which makes a few items (equipments and categories)
+
+When using the following code in terminal, it loads populatedb.js and loads a few items to mongoDB.
+
+```
+node populatedb <mongoDB api>
+```
