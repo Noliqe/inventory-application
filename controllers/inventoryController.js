@@ -10,9 +10,9 @@ exports.equipment_list = function (req, res, next) {
                 return next(err);
             }
             //Succesful
-            res.render("equipment_list", {
-                title: "Equipment List",
-                equipment_list: list_equipments,
+            res.render("inventory_list", {
+                title: "Inventory List",
+                inventory_list: list_equipments,
             });
         });
 };

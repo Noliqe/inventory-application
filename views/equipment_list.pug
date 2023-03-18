@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each equipment in equipment_list
+      li
+        a(href=equipment.url) #{equipment.name}
+        p Category: #{equipment.category}
+        p Price: $#{equipment.price}
+
+    else
+      li There are no equipments.

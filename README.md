@@ -80,3 +80,17 @@ I need 4 routes:
 And two controllers:
 - Category
 - Equipment
+
+6. Sixt step
+
+Create all of the 'Read' views.
+
+- Create
+- Delete 
+- Detail
+- List
+- Update
+
+7. Seventh step
+
+Create all the forms and build out the controllers you need for the rest of the CRUD actions.

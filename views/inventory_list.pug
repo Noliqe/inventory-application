@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each equipment in inventory_list
+      li
+        a(href=equipment.url) Equipment: #{equipment.name}
+        p Quantity: #{equipment.stock}
+
+    else
+      li There are no equipments.

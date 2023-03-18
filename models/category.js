@@ -6,7 +6,7 @@ const CategorySchema = new Schema({
   name: { type: String, required: true, maxLength: 20 },
   discription: {type: String, required: true, maxLength: 100},
   number_of_equipment: { type: Number},
-  equipment: { type: Schema.Types.ObjectId, ref: "Equipment"  },
+  equipment: { type: Array },
 });
 
 // Virtual for categories URL
