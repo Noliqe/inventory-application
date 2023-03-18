@@ -66,3 +66,17 @@ When using the following code in terminal, it loads populatedb.js and loads a fe
 ```
 node populatedb <mongoDB api>
 ```
+
+5. Fifth step
+
+Set up the routes and controllers.
+
+I need 4 routes:
+- Home
+- Category
+- Equipment
+- Inventory
+
+And two controllers:
+- Category
+- Equipment
