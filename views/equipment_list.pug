@@ -7,7 +7,7 @@ block content
     each equipment in equipment_list
       li
         a(href=equipment.url) #{equipment.name}
-        p Category: #{equipment.category}
+        p Category: #{equipment.category.name}
         p Price: $#{equipment.price}
 
     else

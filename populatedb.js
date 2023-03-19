@@ -23,10 +23,10 @@ async function main() {
 const equipments = []
 const categories = []
 
-function equipmentCreate(name, discription, category, price, stock, cb) {
+function equipmentCreate(name, description, category, price, stock, cb) {
   equipmentdetail = { 
     name: name,
-    discription: discription,
+    description: description,
     price: price,
     stock: stock,
     category: category
@@ -45,10 +45,10 @@ function equipmentCreate(name, discription, category, price, stock, cb) {
 }
 
 
-function categoryCreate(name, discription, cb) {
+function categoryCreate(name, description, cb) {
   categorydetail = { 
     name: name,
-    discription: discription,
+    description: description,
   } 
     
   const category = new Category(categorydetail);    
@@ -67,9 +67,8 @@ function categoryUpdate(category, equipment) {
     async.parallel(
         Category.collection.updateOne(
             { "_id": category._id}, // Filter
-            {$push: {"equipment": equipment},
-            $inc: {"number_of_equipments": 1}}, // Update
-            {upsert: true} // add document with req.body._id if not exists 
+            {$set: {"equipment": equipment}}, // Update
+            {upsert: true}
         )
         .then((obj) => {
             console.log('Updated - ' + obj);
@@ -101,11 +100,8 @@ function createCategoriesEquipment(cb) {
 function updateCategories(cb) {
     async.parallel([
         function(callback) {
-            categoryUpdate(categories[0], equipments[0], callback)
+            categoryUpdate(categories[0], [equipments[0]._id,equipments[1]._id], callback)
         },
-        function(callback) {
-            categoryUpdate(categories[0], equipments[1], callback)
-        }
     ],
     cb);
 }

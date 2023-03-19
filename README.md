@@ -16,7 +16,7 @@ The model that I made for sport equipments:
 
 **Equipment**
 - Name: String
-- Discription: String
+- Description: String
 - Category: Category[1]
 - Price: Number
 - Number-in-stock: Number
@@ -24,7 +24,7 @@ The model that I made for sport equipments:
 
 *Category*
 - Name: String
-- Discription: String
+- Description: String
 - Number-of-equipments: Number
 - Equipments: Equipments[0..*]
 - Url: String

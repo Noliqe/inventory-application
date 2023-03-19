@@ -1,0 +1,23 @@
+extends layout
+
+block content
+
+  h1 Category: #{title}
+  p Discription: #{category_detail.description}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Equipments
+
+      ul
+        each equipment in category_detail.equipment
+          li
+            p Equipment: #{equipment.name}
+            p Description: #{equipment.description}
+            p Price: #{equipment.price}$
+
+
+  p
+    a(href=category_detail.url+'/update') Update Category
+    a(href=category_detail.url+'/delete') Delete Category
+

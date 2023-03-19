@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const category = require("../controllers/categoryController");
-
-/* GET category listing. */
-// router.get('/', function(req, res, next) {
-//   res.send('respond with a category');
-// });
+const category_controller = require("../controllers/categoryController");
 
 // GET request for list of all categories.
-router.get("/", category.category_list);
+router.get("/", category_controller.category_list);
+
+// GET request for one category.
+router.get("/:id", category_controller.category_detail);
 
 
 module.exports = router;
