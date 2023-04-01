@@ -1,5 +1,6 @@
 const Category = require("../models/category");
 const async = require("async");
+const { body, validationResult } = require("express-validator");
 
 // Display list of all Categories
 exports.category_list = function (req, res, next) {
@@ -11,7 +12,6 @@ exports.category_list = function (req, res, next) {
                 return next(err);
             }
             //Succesful
-            console.log(list_categories)
             res.render("category_list", {
                 title: "Category List",
                 category_list: list_categories,
@@ -48,3 +48,61 @@ exports.category_detail = (req, res, next) => {
       }
     );
   };
+
+// Display category create form on GET.
+exports.category_create_get = (req, res, next) => {
+  res.render("category_create", { title: "Create Category" });
+};
+
+// Handle category create on POST.
+exports.category_create_post = [
+  // Validate and sanitize fields.
+  body("name", "Name must be specified").trim().isLength({ min: 1 }).escape(),
+  body("description", "Discription must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+
+  // Process request after validation and sanitization.
+  (req, res, next) => {
+    // Extract the validation errors from a request.
+    const errors = validationResult(req);
+
+    // Create a equipment object with escaped and trimmed data.
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. Render form again with sanitized values and error messages.
+      res.render("category_create", {
+        title: "Create Category",
+        errors: errpr.array(),
+      });
+      return;
+    } else {
+      // Data from the form is valid
+      // Check if Category with the same name already exist
+      Category.findOne({ name: req.body.name }).exec((err, found_category) => {
+        if (err) {
+          return next(err)
+        }
+
+        if (found_category) {
+          // Category exist redirect to its detail page.
+          res.redirect(found_category.url);
+        } else {
+          category.save((err) => {
+            if (err) {
+              return next(err);
+            }
+            // Category saved. Redirect to category detail page.
+            res.redirect(category.url);
+          });
+        }
+      });
+    }
+
+  }
+];

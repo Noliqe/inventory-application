@@ -18,11 +18,18 @@ a {
 .header > ul {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  width: 80vw;
+  justify-content: space-around;
+  width: 75vw;
   align-items: center;
 }
 
 .header > ul > li {
   list-style: none;
+}
+
+.new {
+  /* display: none; */
+  border: 2px solid grey;
+  position: absolute;
+  right: 0px;
 }
