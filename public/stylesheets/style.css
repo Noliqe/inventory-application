@@ -28,7 +28,7 @@ a {
 }
 
 .new {
-  /* display: none; */
+  display: none;
   border: 2px solid grey;
   position: absolute;
   right: 0px;

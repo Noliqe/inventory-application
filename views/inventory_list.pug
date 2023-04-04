@@ -6,7 +6,10 @@ block content
   ul
     each equipment in inventory_list
       li
-        a(href=equipment.url) Equipment: #{equipment.name}
+        p Equipment: 
+          a(href=equipment.url) #{equipment.name}
+        p Category: 
+          a(href=equipment.category.url) #{equipment.category.name}
         p Quantity: #{equipment.stock}
 
     else

@@ -3,6 +3,8 @@ extends layout
 block content
   h1= title
 
+  a(href="/category/createcategory") Add new category
+
   ul
     each category in category_list
       li
@@ -11,3 +13,4 @@ block content
 
     else
       li There are no categories.
+

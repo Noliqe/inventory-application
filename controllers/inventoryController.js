@@ -5,6 +5,7 @@ const async = require("async");
 exports.equipment_list = function (req, res, next) {
     Equipment.find()
         .sort([["name", "ascending"]])
+        .populate("category")
         .exec(function (err, list_equipments) {
             if (err) {
                 return next(err);

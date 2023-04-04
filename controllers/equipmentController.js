@@ -2,6 +2,7 @@ const Equipment = require("../models/equipment");
 const Category = require("../models/category");
 const async = require("async");
 const { body, validationResult } = require("express-validator");
+const categoryController = require("./categoryController");
 
 // Display list of all Equipments
 exports.equipment_list = function (req, res, next) {
@@ -121,8 +122,66 @@ exports.equipment_create_post = [
       if (err) {
         return next(err);
       }
-      // Successful: redirect to new record.
+      // Successful
+      // Update category
+      Category.updateOne(
+        { "_id": req.body.category}, // Filter
+        {$push: {"equipment": equipment}}, // Update
+        {upsert: true}
+    )
+    .then((obj) => {
+        console.log('Updated - ' + obj);
+        
+    })
+    .catch((err) => {
+        return next(err);
+   })
+      // Redirect to new record.
       res.redirect(equipment.url);
     });
   },
 ];
+
+// Display Equipment delete form on GET
+exports.equipment_delete_get = (req, res, next) => {
+  Equipment.findById(req.params.id)
+        .exec(function (err, results) {
+            if (err) {
+                return next(err);
+            }
+            //Succesful
+            res.render("equipment_delete", {
+                title: "Equipment",
+                equipment: results,
+            });
+        });
+}
+
+// Handle Equipment delete on POST
+exports.equipment_delete_post = (req, res, next) => {
+  Equipment.findById(req.body.equipmentid)
+  .exec(function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      // Succes
+      Equipment.findByIdAndRemove(req.body.equipmentid, (err) => {
+        if (err) {
+          return next(err);
+        }
+      });
+      // Update category
+      Category.updateOne(
+        {"_id": results.category}, //Filter
+        {$pull: {"equipment": req.body.equipmentid}}, //Update
+      )
+      .then(() => {
+        console.log("Updated")
+      })
+      .catch((err) => {
+        return next(err);
+      })
+      res.redirect("/equipment");
+    }
+  );
+};

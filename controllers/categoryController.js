@@ -1,4 +1,5 @@
 const Category = require("../models/category");
+const Equipment = require("../models/equipment");
 const async = require("async");
 const { body, validationResult } = require("express-validator");
 
@@ -106,3 +107,64 @@ exports.category_create_post = [
 
   }
 ];
+
+// Display Category delete form on GET
+exports.category_delete_get = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.params.id).exec(callback);
+      },
+      equipment(callback) {
+        Equipment.find({ category: req.params.id }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+            //Succesful
+            res.render("category_delete", {
+                title: "Category",
+                category: results.category,
+                equipment: results.equipment,
+            });
+        });
+}
+
+// Handle Category delete on POST
+exports.category_delete_post = (req, res, next) => {
+  async.parallel(
+    {
+      category(callback) {
+        Category.findById(req.body.categoryid).exec(callback);
+      },
+      equipment(callback) {
+        Equipment.find({ category: req.body.categoryid }).exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+      // Succes
+      if (results.equipment.length > 0) {
+        // Category has books. render in same way as for GET route
+        res.render("category_delete", {
+          title: "Category",
+          category: results.category,
+          equipment: results.equipment,
+      });
+      return;
+      }
+      // Category has no books. Delete object and redirect to the list of categories
+      Category.findByIdAndRemove(req.body.categoryid, (err) => {
+        if (err) {
+          return next(err);
+        }
+      });
+      // Succes 
+      res.redirect("/category");
+    }
+  );
+};
