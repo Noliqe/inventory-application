@@ -165,23 +165,157 @@ exports.equipment_delete_post = (req, res, next) => {
         return next(err);
       }
       // Succes
-      Equipment.findByIdAndRemove(req.body.equipmentid, (err) => {
-        if (err) {
-          return next(err);
+      async.parallel(
+        {
+          equipmentRemove(callback) {
+            Equipment.findByIdAndRemove(req.body.equipmentid, callback);
+          },
+          categoryUpdate(callback) {
+            Category.updateOne(
+              {"_id": results.category}, //Filter
+              {$pull: {"equipment": req.body.equipmentid}}, //Update
+              callback
+            )
+          },
+        },
+        (err, results) => {
+          if (err) {
+            return next(err);
+          }
+          // Succes
+          res.redirect("/equipment");
         }
-      });
-      // Update category
-      Category.updateOne(
-        {"_id": results.category}, //Filter
-        {$pull: {"equipment": req.body.equipmentid}}, //Update
       )
-      .then(() => {
-        console.log("Updated")
-      })
-      .catch((err) => {
-        return next(err);
-      })
-      res.redirect("/equipment");
     }
   );
 };
+
+// Display equipment update form on GET.
+exports.equipment_update_get = (req, res, next) => {
+  async.parallel(
+    {
+      equipment(callback) {
+        Equipment.findById(req.params.id).exec(callback);
+      },
+      category(callback) {
+        Category.find()
+        .sort([["name", "ascending"]])
+        .exec(callback);
+      },
+    },
+    (err, results) => {
+      if (err) {
+        return next(err);
+      }
+            //Succesful
+            res.render("equipment_update", {
+                title: "Update Equipment",
+                categories: results.category,
+                equipment: results.equipment,
+            });
+        });
+}
+
+// Handle equipment update on POST
+exports.equipment_update_post = [
+  // Validate and sanitize fields.
+  body("name", "Name must be specified").trim().isLength({ min: 1 }).escape(),
+  body("description", "Discription must be specified")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("category").escape(),
+  body("price")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body("stock")
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  
+  // Proces request after validation and sanitization.
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Create a Equipment object with escaped/trimmed data and old id.
+    const equipment = new Equipment({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+      _id: req.params.id, // This is requered, or a new ID will be assigned.
+    });
+
+    if (!errors.isEmpty()) {
+      // There are errors. ender form again with sanitized values/error
+
+      // Get categories for form
+      Category.find()
+      .sort([["name", "ascending"]])
+      .exec(function (err, results) {
+          if (err) {
+              return next(err);
+          }
+          //Succesful
+          res.render("equipment_update", {
+              title: "Update Equipment",
+              equipment,
+              categories: results,
+          });
+      });
+      return;
+    }
+
+    // Data from form is valid. Update the record.
+
+    Equipment.findById(req.params.id)
+    .exec(function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      // Check if category match
+      if (results.category === req.body.category) {
+        Equipment.findByIdAndUpdate(req.params.id, equipment, {}, (err, theequipment) => {
+          if (err) {
+            return next(err);
+          }
+    
+          // Successful: redirect to equipment detail page.
+          res.redirect(theequipment.url);
+        });
+      } else {
+        async.parallel(
+          {
+            equipmentUpdate(callback) {
+              Equipment.findByIdAndUpdate(req.params.id, equipment, callback)
+            },
+            categoryRemove(callback) {
+              Category.updateOne(
+                {"_id": results.category}, //Filter
+                {$pull: {"equipment": req.params.id}}, //remove
+                callback
+              )
+            },
+            categoryUpdate(callback) {
+              Category.updateOne(
+                {"_id": req.body.category}, //Filter
+                {$push: {"equipment": equipment}}, //add
+                callback
+              )
+            }
+          },
+          (err, results) => {
+            if (err) {
+              return next(err);
+            }
+          // Successful: redirect to equipment detail page.
+          res.redirect(equipment.url);
+          }
+        )
+      }
+      })
+
+  }
+]

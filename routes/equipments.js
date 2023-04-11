@@ -18,6 +18,12 @@ router.get("/:id/delete", equipment_controller.equipment_delete_get);
 // POST request to delete equipment.
 router.post("/:id/delete", equipment_controller.equipment_delete_post);
 
+// GET request to update equipment.
+router.get("/:id/update", equipment_controller.equipment_update_get);
+
+// POST request to update equipment.
+router.post("/:id/update", equipment_controller.equipment_update_post);
+
 // GET request for one equipment.
 router.get("/:id", equipment_controller.equipment_detail);
 

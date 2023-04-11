@@ -17,6 +17,12 @@ router.get("/:id/delete", category_controller.category_delete_get);
 // POST request to delete category
 router.post("/:id/delete", category_controller.category_delete_post);
 
+// GET request to update category.
+router.get("/:id/update", category_controller.category_update_get);
+
+// POST request to update category
+router.post("/:id/update", category_controller.category_update_post);
+
 // GET request for one category.
 router.get("/:id", category_controller.category_detail);
 
