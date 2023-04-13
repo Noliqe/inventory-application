@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-console.log('This script populates some test equipments and categories to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority"');
+console.log('This script populates some test equipments and categories to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/Inventory?retryWrites=true&w=majority"');
 
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
@@ -63,9 +63,10 @@ function categoryCreate(name, description, cb) {
   }  );
 }
 
+
 function categoryUpdate(category, equipment) {
     async.parallel(
-        Category.collection.updateOne(
+        Category.updateOne(
             { "_id": category._id}, // Filter
             {$set: {"equipment": equipment}}, // Update
             {upsert: true}

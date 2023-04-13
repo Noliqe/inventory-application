@@ -4,93 +4,58 @@ This project is part of <a href='https://www.theodinproject.com/lessons/nodejs-i
 
 In this project I need to create an inventory management app for an imaginary store. The inventory app should have categories and items, so when the user goes to the home-page they can choose a category to view, and then get a list of every item in that category. For this project I include all of the CRUD methods for both items and categories, so anybody that’s visiting the site can Create, Read, Update or Delete any Item or Category.
 
-1. First step
+## Sport Equipment Store
 
-Write down all the models I need and the fields that should go in them.
+An fake store where you can manage your sport equipments.
 
-- Items should at least have: a name, description, category, price, number-in-stock and URL, though you should feel free to add more fields if it seems relevant to the type of business you’ve chosen.
+## Features
 
-- Categories should at least have a name, a description and a URL.
+The web app has Inventory, Categories and Equipments. The web app allows you to use all the CRUD operations. Create, Read, Update and Delete.
 
-The model that I made for sport equipments:
+## Getting Started
 
-**Equipment**
-- Name: String
-- Description: String
-- Category: Category[1]
-- Price: Number
-- Number-in-stock: Number
-- Url: String
+These instructions will get you a copy of the project up and running on your local machine for development en testing purposes.
 
-*Category*
-- Name: String
-- Description: String
-- Number-of-equipments: Number
-- Equipments: Equipments[0..*]
-- Url: String
+### Prerequisites
 
-2. Second step
+You will need to have Node.js and npm (Node Package Manager) installed on your machine. You can download and install them from the official website (https://nodejs.org/en/).
 
-Generate the boilerplate skeleton with express-generator. I've choosen *PUG* as templating language.
+You will also need to have MongoDb as database, you can download and install mongoDb (atlas) from the official website (https://www.mongodb.com/).
 
-```
-express inventory-application --view=pug
+### Installing
+
+1. Clone the repository to your local machine
+
+```sh
+git clone https://github.com/Noliqe/inventory-application.git
 ```
 
-I've added nodemon to the project for quick debugging.
+2. Install NPM packages
 
-```
-npm install --save-dev nodemon
-```
-
-3. Third step
-
-Create a new Mongo Collection using the web-interface and then set up mine database schemas and models.
-
-- Added mongoose connection
-- Created an models folder within seperate files
-- Added equipment model and category model
-- Add schema's to each model
-- Virtuals for each model, which returns the absolute URL required to get a particular instance of the model
-
-4. Fourth step
-
-Download populatedb.js and edit it to the specifics of my models.
-
-- Added functions equipment- and category create, which creates equipments and categories
-- Added function categoryUpdate, to update an current category
-- Created an function which makes a few items (equipments and categories)
-
-When using the following code in terminal, it loads populatedb.js and loads a few items to mongoDB.
-
-```
-node populatedb <mongoDB api>
+```sh
+npm install
 ```
 
-5. Fifth step
+3. Install Mongoose
 
-Set up the routes and controllers.
+```sh
+npm install mongoose@6.9.0
+```
 
-I need 4 routes:
-- Home
-- Category
-- Equipment
-- Inventory
+3. Create a .env file in the root directory of the project and add the following:
 
-And two controllers:
-- Category
-- Equipment
+mongoDBKey="Insert your mongodb url here"
 
-6. Sixt step
+4. Populate the database with data
 
-Create all of the 'Read' views.
+```sh
+npm run populate "Your mongodb url"
+```
 
-- Create
-- Delete 
-- Detail
-- List
-- Update
+5. Run the app
 
-7. Seventh step
+```sh
+npm start
+```
 
-Create all the forms and build out the controllers you need for the rest of the CRUD actions.
+The application will now be running on http://localhost:3000.
