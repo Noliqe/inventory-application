@@ -38,9 +38,9 @@ npm install
 
 3. Create a .env file in the root directory of the project and add the following:
 
-E.g. mongoDBKey="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/Inventory?retryWrites=true&w=majority"
+    For example *mongoDBKey="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/Inventory?retryWrites=true&w=majority"*
 
-mongoDBKey="Insert your mongodb url here"
+    mongoDBKey="Insert your mongodb url here"
 
 4. Populate the database with data
 
