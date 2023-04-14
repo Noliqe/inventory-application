@@ -3,17 +3,19 @@
 console.log('This script populates some test equipments and categories to your database. Specified database as argument - e.g.: node populatedb "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/Inventory?retryWrites=true&w=majority"');
 
 // Get arguments passed on command line
-const userArgs = process.argv.slice(2);
+// const userArgs = process.argv.slice(2);
 
 const async = require('async')
 const Equipment = require('./models/equipment')
 const Category = require('./models/category')
 
+require('dotenv').config();
 
 const mongoose = require('mongoose');
 mongoose.set('strictQuery', false); // Prepare for Mongoose 7
 
-const mongoDB = userArgs[0];
+// const mongoDB = userArgs[0];
+const mongoDB = process.env.mongoDBKey;
 
 main().catch(err => console.log(err));
 async function main() {

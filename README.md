@@ -36,20 +36,16 @@ git clone https://github.com/Noliqe/inventory-application.git
 npm install
 ```
 
-3. Install Mongoose
-
-```sh
-npm install mongoose@6.9.0
-```
-
 3. Create a .env file in the root directory of the project and add the following:
+
+E.g. mongoDBKey="mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/Inventory?retryWrites=true&w=majority"
 
 mongoDBKey="Insert your mongodb url here"
 
 4. Populate the database with data
 
 ```sh
-npm run populate "Your mongodb url"
+node populatedb
 ```
 
 5. Run the app
